@@ -36,9 +36,10 @@ public class StorePage extends BasePage {
         return By.cssSelector("a[aria-label='Add “" + productName + "” to your cart']");
     }
 
-    public void clickAddToCart(String productName) {
+    public StorePage clickAddToCartBtn(String productName) {
         By btnAddToCart = getAddToCartButton(productName);
         driver.findElement(btnAddToCart).click();
+        return this;
     }
 
     public StorePage search(String text) {
@@ -47,8 +48,9 @@ public class StorePage extends BasePage {
         return this;
     }
 
-    public void clickViewCart() {
+    public CartPage clickViewCart() {
         driver.findElement(viewCartLink).click();
+        return new CartPage(driver);
     }
 
 }
