@@ -17,7 +17,7 @@ public class CartPage extends BasePage {
         return driver.findElement(productName).getText();
     }
 
-    public CheckOutPage clickCheckOutBtn() {
+    public CheckOutPage checkOut() {
         driver.findElement(checkOutBtn).click();
         return new CheckOutPage(driver);
     }

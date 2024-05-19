@@ -36,19 +36,19 @@ public class StorePage extends BasePage {
         return By.cssSelector("a[aria-label='Add “" + productName + "” to your cart']");
     }
 
-    public StorePage clickAddToCartBtn(String productName) {
+    public StorePage addToCart(String productName) {
         By btnAddToCart = getAddToCartButton(productName);
         driver.findElement(btnAddToCart).click();
         return this;
     }
 
-    public StorePage search(String text) {
+    public StorePage SearchProduct(String text) {
         enterSearchText(text);
         clickSearchButton();
         return this;
     }
 
-    public CartPage clickViewCart() {
+    public CartPage viewCart() {
         driver.findElement(viewCartLink).click();
         return new CartPage(driver);
     }

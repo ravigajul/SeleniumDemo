@@ -1,0 +1,9 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "addressLineOne": "13230",
+  "city": "Monroe",
+  "zip": "98272",
+  "email": "ravi@test.com",
+  "phone": "1234567890"
+}

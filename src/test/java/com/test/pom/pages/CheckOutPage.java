@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.test.pom.base.BasePage;
+import com.test.pom.objects.BillingAddress;
 
 public class CheckOutPage extends BasePage {
     private final By firstName = By.id("billing_first_name");
@@ -17,7 +18,7 @@ public class CheckOutPage extends BasePage {
     private final By email = By.id("billing_email");
     private final By radioDirectTransfer = By.id("payment_method_bacs");
     private final By placeOrderBtn = By.id("place_order");
-
+    private final By confirmationReceived = By.cssSelector(".woocommerce-thankyou-order-received");
     public CheckOutPage(WebDriver driver) {
         super(driver);
     }
@@ -58,7 +59,8 @@ public class CheckOutPage extends BasePage {
     }
 
     public CheckOutPage enterPhone(String text) {
-        driver.findElement(phone).clear(); // clear the address field before entering the phone number (this is a bug fix
+        driver.findElement(phone).clear(); // clear the address field before entering the phone number (this is a bug
+                                           // fix
         driver.findElement(phone).sendKeys(text);
         return this;
     }
@@ -73,9 +75,21 @@ public class CheckOutPage extends BasePage {
         return this;
     }
 
-    public ConfirmationPage clickPlaceOrderButton() {
+    public CheckOutPage placeOrder() {
         driver.findElement(placeOrderBtn).click();
-        return new ConfirmationPage(driver);
+        return this;
+    }
+
+    public CheckOutPage setBillingAddress(BillingAddress billingaddress) throws InterruptedException {
+        enterFirstName(billingaddress.getFirstName()).enterLastName(billingaddress.getLastName()).selectCountry()
+                .enterAddress(billingaddress.getAddressLineOne()).enterCity(billingaddress.getCity())
+                .enterZip(billingaddress.getZip()).enterPhone(billingaddress.getPhone())
+                .enterEmail(billingaddress.getEmail());
+        return this;
+    }
+    public String getConfirmationMessage() throws InterruptedException {
+        Thread.sleep(3000);
+        return driver.findElement(confirmationReceived).getText();
     }
 
 }

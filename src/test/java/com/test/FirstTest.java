@@ -1,48 +1,73 @@
 package com.test;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.test.constants.MyConstants;
 import com.test.pom.base.BaseTest;
+import com.test.pom.objects.BillingAddress;
 import com.test.pom.pages.CartPage;
 import com.test.pom.pages.CheckOutPage;
-import com.test.pom.pages.ConfirmationPage;
 import com.test.pom.pages.HomePage;
 import com.test.pom.pages.StorePage;
+import com.test.pom.utils.JacksonUtils;
 
 public class FirstTest extends BaseTest {
 
     @Test
-    public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException {
-        
-        HomePage homePage = new HomePage(driver);
-        homePage.load(MyConstants.BASE_URL);
-        StorePage storePage = homePage.clickStoreMenuLink();
-        // builder pattern enterSearchText returns the object of the same class
-        // storePage.enterSearchText(null, "blue").clickSearchButton()
+    public void guestCheckoutUsingDirectBankTransfer() throws InterruptedException, IOException {
+        // Readable but more lines of code
+        /*
+         * BillingAddress billingAddress = new BillingAddress();
+         * //builder pattern
+         * billingAddress.setFirstName("John")
+         * .setLastName("Doe")
+         * .setAddressLineOne("13230")
+         * .setCity("Monroe")
+         * .setZip("98272")
+         * .setPhone("1234567890")
+         * .setEmail("ravi@test.com");
+         */
 
-        // functional page object pattern
-        storePage.search("blue");
+        // not readable but less lines of code using constructor both are same
+        /* BillingAddress billingAddress = new BillingAddress("John", "Doe", "13230", "Monroe", "98272", "ravi@test.com",
+                "1234567890"); */
+
+         BillingAddress   billingAddress =JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+       
+        HomePage homePage = new HomePage(driver);
+
+        // loading home page
+        homePage.load(MyConstants.BASE_URL);
+
+        // navigating to store menu
+        StorePage storePage = homePage.navigateToStoreMenu();
+
+        // searching for product
+        storePage.SearchProduct("blue");
+
+        //verifying search results
         Assert.assertEquals(storePage.getSearchTitle(), "Search results: “blue”");
-        storePage.clickAddToCartBtn("Blue Shoes");
+
+        // adding product to cart
+        storePage.addToCart("Blue Shoes");
         Thread.sleep(2000);
-        CartPage cartPage = storePage.clickViewCart();
+
+        // navigating to cart page
+        CartPage cartPage = storePage.viewCart();
+
+        // verifying product in cart
         Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
-        CheckOutPage checkOutPage = cartPage.clickCheckOutBtn();
-        ConfirmationPage confirmationPage = checkOutPage.
-        enterFirstName("John").
-        enterLastName("Doe").
-        selectCountry().
-        enterAddress("13230").
-        enterCity("Monroe").
-        enterZip("98272").
-        enterPhone("1234567890").
-        enterEmail("ravi@test.com").
-        enterZip("98272").
-        clickPlaceOrderButton();
+
+        // checking out
+        CheckOutPage checkOutPage = cartPage.checkOut().setBillingAddress(billingAddress).placeOrder();
+
+        // verifying order confirmation
         Assert.assertTrue(
-                confirmationPage.getConfirmationMessage().contains("Thank you. Your order has been received."));
+                checkOutPage.getConfirmationMessage().contains("Thank you. Your order has been received."));
 
     }
 }
