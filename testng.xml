@@ -5,4 +5,7 @@
             <package name="com.test.pom.tests" />
         </packages>
     </test>
+    <listeners>
+        <listener class-name="com.test.pom.listeners.Listeners" />
+    </listeners>
 </suite>

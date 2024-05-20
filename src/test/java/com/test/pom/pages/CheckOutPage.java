@@ -17,6 +17,7 @@ public class CheckOutPage extends BasePage {
     private final By phone = By.id("billing_phone");
     private final By email = By.id("billing_email");
     private final By radioDirectTransfer = By.id("payment_method_bacs");
+    private final By radioCashOyDelivery = By.id("payment_method_cod");
     private final By placeOrderBtn = By.id("place_order");
     private final By confirmationReceived = By.cssSelector(".woocommerce-thankyou-order-received");
 
@@ -34,9 +35,8 @@ public class CheckOutPage extends BasePage {
         return this;
     }
 
-    public CheckOutPage selectCountry() throws InterruptedException {
+    public CheckOutPage selectCountry() {
         driver.findElement(countryDropDown).click();
-        Thread.sleep(2000);
         driver.findElement(countryOption).click();
         return this;
     }
@@ -76,7 +76,17 @@ public class CheckOutPage extends BasePage {
         return this;
     }
 
-    public CheckOutPage placeOrder() {
+    public CheckOutPage selectCashOnDelivery() {
+        driver.findElement(radioCashOyDelivery).click();
+        return this;
+    }
+
+    public CheckOutPage placeOrder(String method) {
+        if (method.equals("directBankTransfer")) {
+            selectDirectTransfer();
+        } else {
+            selectCashOnDelivery();
+        }
         driver.findElement(placeOrderBtn).click();
         return this;
     }
@@ -90,7 +100,7 @@ public class CheckOutPage extends BasePage {
     }
 
     public String getConfirmationMessage() {
-        fluentlyWaitForElementToAppear(confirmationReceived);
+        fluentlyWaitForElementToDisappear(overlay);
         return driver.findElement(confirmationReceived).getText();
     }
 

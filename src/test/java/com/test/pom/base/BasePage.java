@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasePage {
 
     protected WebDriver driver;
-
+    protected final By overlay = By.cssSelector("div.blockUI.blockOverlay");
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }

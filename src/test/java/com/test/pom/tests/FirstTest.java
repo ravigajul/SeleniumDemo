@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.ExtentTest;
 import com.test.constants.MyConstants;
 import com.test.pom.base.BaseTest;
 import com.test.pom.objects.BillingAddress;
@@ -38,6 +39,44 @@ public class FirstTest extends BaseTest {
          * "Monroe", "98272", "ravi@test.com",
          * "1234567890");
          */
+        BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+
+        // getting data from products.json ..logic in product
+        Product product = new Product(1215);
+        String productName = product.getName();
+        HomePage homePage = new HomePage(driver);
+
+        // loading home page
+        homePage.load(MyConstants.BASE_URL);
+
+        // navigating to store menu
+        StorePage storePage = homePage.navigateToStoreMenu();
+
+        // searching for product
+        storePage.SearchProduct("blue");
+
+        // verifying search results
+        Assert.assertEquals(storePage.getSearchTitle(), "Search results: “blue”");
+
+        // adding product to cart
+        storePage.addToCart("Blue Shoes");
+        // Thread.sleep(2000);
+        // navigating to cart page
+        CartPage cartPage = storePage.viewCart();
+
+        // verifying product in cart
+        Assert.assertEquals(cartPage.getProductName(), productName);
+
+        CheckOutPage checkOutPage = cartPage.checkOut().setBillingAddress(billingAddress)
+                .placeOrder("directBankTransfer");
+
+        // verifying order confirmation
+        Assert.assertTrue(
+                checkOutPage.getConfirmationMessage().contains("Thank you. Your order has been received."));
+    }
+
+    @Test
+    public void guestCheckoutUsingCashOnDelivery() throws InterruptedException, IOException {
 
         BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
 
@@ -67,11 +106,10 @@ public class FirstTest extends BaseTest {
         // verifying product in cart
         Assert.assertEquals(cartPage.getProductName(), productName);
 
-        CheckOutPage checkOutPage = cartPage.checkOut().setBillingAddress(billingAddress).placeOrder();
+        CheckOutPage checkOutPage = cartPage.checkOut().setBillingAddress(billingAddress).placeOrder("cashOnDelivery");
 
         // verifying order confirmation
         Assert.assertTrue(
                 checkOutPage.getConfirmationMessage().contains("Thank you. Your order has been received."));
-
     }
 }
