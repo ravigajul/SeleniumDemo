@@ -19,6 +19,7 @@ public class CheckOutPage extends BasePage {
     private final By radioDirectTransfer = By.id("payment_method_bacs");
     private final By placeOrderBtn = By.id("place_order");
     private final By confirmationReceived = By.cssSelector(".woocommerce-thankyou-order-received");
+
     public CheckOutPage(WebDriver driver) {
         super(driver);
     }
@@ -87,8 +88,9 @@ public class CheckOutPage extends BasePage {
                 .enterEmail(billingaddress.getEmail());
         return this;
     }
-    public String getConfirmationMessage() throws InterruptedException {
-        Thread.sleep(3000);
+
+    public String getConfirmationMessage() {
+        fluentlyWaitForElementToAppear(confirmationReceived);
         return driver.findElement(confirmationReceived).getText();
     }
 

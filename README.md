@@ -209,7 +209,7 @@ ConfirmationPage confirmationPage = checkOutPage.
         enterEmail("ravi@test.com").
         enterZip("98272").
         clickPlaceOrderButton();
-````
+```
 
 ### Structural vs. Functional Pattern
 
@@ -234,3 +234,13 @@ Implement error handling and logging within page methods to capture failures and
 ### Synchronization
 
 Use appropriate waits (explicit, implicit) to handle dynamic content and ensure elements are ready for interaction.
+ https://www.selenium.dev/documentation/webdriver/waits/  
+
+## Maven Goal to execute All Tests
+
+```bash
+mvn clean test 
+//to run on msedge, assuming browser is the system property configured in the code
+mvn clean test -Dbrowser="msedge"
+
+```

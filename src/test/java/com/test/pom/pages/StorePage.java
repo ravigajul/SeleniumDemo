@@ -49,6 +49,7 @@ public class StorePage extends BasePage {
     }
 
     public CartPage viewCart() {
+        fluentlyWaitForElementToDisappear(viewCartLink);
         driver.findElement(viewCartLink).click();
         return new CartPage(driver);
     }

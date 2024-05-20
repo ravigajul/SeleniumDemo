@@ -1,7 +1,6 @@
-package com.test;
+package com.test.pom.tests;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,6 +8,7 @@ import org.testng.annotations.Test;
 import com.test.constants.MyConstants;
 import com.test.pom.base.BaseTest;
 import com.test.pom.objects.BillingAddress;
+import com.test.pom.objects.Product;
 import com.test.pom.pages.CartPage;
 import com.test.pom.pages.CheckOutPage;
 import com.test.pom.pages.HomePage;
@@ -33,11 +33,17 @@ public class FirstTest extends BaseTest {
          */
 
         // not readable but less lines of code using constructor both are same
-        /* BillingAddress billingAddress = new BillingAddress("John", "Doe", "13230", "Monroe", "98272", "ravi@test.com",
-                "1234567890"); */
+        /*
+         * BillingAddress billingAddress = new BillingAddress("John", "Doe", "13230",
+         * "Monroe", "98272", "ravi@test.com",
+         * "1234567890");
+         */
 
-         BillingAddress   billingAddress =JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
-       
+        BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+
+        // getting data from products.json ..logic in product
+        Product product = new Product(1215);
+        String productName = product.getName();
         HomePage homePage = new HomePage(driver);
 
         // loading home page
@@ -49,20 +55,18 @@ public class FirstTest extends BaseTest {
         // searching for product
         storePage.SearchProduct("blue");
 
-        //verifying search results
+        // verifying search results
         Assert.assertEquals(storePage.getSearchTitle(), "Search results: “blue”");
 
         // adding product to cart
         storePage.addToCart("Blue Shoes");
-        Thread.sleep(2000);
-
+        // Thread.sleep(2000);
         // navigating to cart page
         CartPage cartPage = storePage.viewCart();
 
         // verifying product in cart
-        Assert.assertEquals(cartPage.getProductName(), "Blue Shoes");
+        Assert.assertEquals(cartPage.getProductName(), productName);
 
-        // checking out
         CheckOutPage checkOutPage = cartPage.checkOut().setBillingAddress(billingAddress).placeOrder();
 
         // verifying order confirmation
