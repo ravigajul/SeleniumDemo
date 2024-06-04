@@ -179,128 +179,49 @@ Create a separate class for each page you interact with to encapsulate all inter
 Use a robust locator strategy (e.g., By.id, By.name, By.xpath, By.cssSelector, etc) to ensure elements are accurately identified.
 
 ### Xpath
-Types
-1. Absolute   
-3. Relative
-4. Parent-child
-5. axes based
+Tabular summary of XPath selectors:
 
-**Example XML for xpath selection**
+| **Selector Type**              | **Pattern**                              | **Description**                                                     | **Example**                              |
+|--------------------------------|------------------------------------------|---------------------------------------------------------------------|------------------------------------------|
+| **Root Node**                  | `/`                                      | Selects the root node                                               | `/`                                      |
+| **Current Node**               | `.`                                      | Selects the current node                                            | `.`                                      |
+| **Parent Node**                | `..`                                     | Selects the parent of the current node                               | `..`                                     |
+| **Element Node**               | `//element`                              | Selects all nodes with the specified element name                    | `//div`                                  |
+| **Any Element**                | `//*`                                    | Selects all elements                                                | `//*`                                    |
+| **Attribute**                  | `@attribute`                             | Selects elements with the specified attribute                        | `//@class`                               |
+| **Specific Attribute**         | `//element[@attribute='value']`          | Selects elements with a specific attribute value                     | `//input[@type='text']`                  |
+| **Child Nodes**                | `element/child`                          | Selects all children of the specified element                        | `div/p`                                  |
+| **Descendant Nodes**           | `element//descendant`                    | Selects all descendants of the specified element                     | `div//span`                              |
+| **Wildcard Node**              | `*`                                      | Matches any node                                                    | `//*`                                    |
+| **Text Node**                  | `text()`                                 | Selects the text node of the current element                         | `//p/text()`                             |
+| **Contains Function**          | `contains(node, 'text')`                 | Selects nodes containing the specified text                          | `//p[contains(text(), 'example')]`       |
+| **Starts-with Function**       | `starts-with(node, 'text')`              | Selects nodes where the text starts with the specified value         | `//p[starts-with(text(), 'example')]`    |
+| **Position Function**          | `position()`                             | Selects nodes based on their position                                | `//li[position()=1]`                     |
+| **Last Function**              | `last()`                                 | Selects the last node                                                | `//li[last()]`                           |
+| **Node Attribute Value**       | `//element[@attribute]`                  | Selects elements with the specified attribute                        | `//a[@href]`                             |
+| **Parent Axis**                | `parent::`                               | Selects the parent of the current node                               | `//title/parent::book`                   |
+| **Ancestor Axis**              | `ancestor::`                             | Selects all ancestors of the current node                            | `//title/ancestor::book`                 |
+| **Ancestor-or-self Axis**      | `ancestor-or-self::`                     | Selects the current node and all its ancestors                       | `//title/ancestor-or-self::book`         |
+| **Attribute Axis**             | `attribute::`                            | Selects all attributes of the current node                           | `//book/attribute::*`                    |
+| **Child Axis**                 | `child::`                                | Selects all children of the current node                             | `//book/child::title`                    |
+| **Descendant Axis**            | `descendant::`                           | Selects all descendants of the current node                          | `//book/descendant::title`               |
+| **Descendant-or-self Axis**    | `descendant-or-self::`                   | Selects the current node and all its descendants                     | `//book/descendant-or-self::title`       |
+| **Following Axis**             | `following::`                            | Selects everything in the document after the closing tag of the current node | `//book/following::title`          |
+| **Following-sibling Axis**     | `following-sibling::`                    | Selects all siblings after the current node                          | `//book/following-sibling::title`        |
+| **Namespace Axis**             | `namespace::`                            | Selects all namespace nodes of the current node                      | `//book/namespace::*`                    |
+| **Parent Axis**                | `parent::`                               | Selects the parent of the current node                               | `//title/parent::book`                   |
+| **Preceding Axis**             | `preceding::`                            | Selects all nodes that appear before the current node                | `//title/preceding::book`                |
+| **Preceding-sibling Axis**     | `preceding-sibling::`                    | Selects all siblings before the current node                         | `//title/preceding-sibling::book`        |
+| **Self Axis**                  | `self::`                                 | Selects the current node                                             | `//title/self::book`                     |
+| **And Condition**              | `node1[condition1 and condition2]`       | Selects nodes that match both conditions                             | `//input[@type='text' and @name='user']` |
+| **Or Condition**               | `node1[condition1 or condition2]`        | Selects nodes that match either condition                            | `//input[@type='text' or @name='user']`  |
+| **Union Operator**             | `path1 | path2`                          | Selects nodes from either path                                       | `//h1 | //h2`                             |
+| **Multiple Attribute Conditions** | `node[@attr1 and @attr2]`              | Selects nodes that match multiple attribute conditions               | `//input[@type and @name]`               |
+| **Substring Function**         | `substring(node, start, length)`         | Selects a substring of the text of the node                          | `substring(//title, 1, 3)`               |
+| **String Length Function**     | `string-length(node)`                    | Returns the length of the text of the node                           | `string-length(//title)`                 |
+| **Normalize Space Function**   | `normalize-space(node)`                  | Strips leading and trailing whitespace and reduces whitespace inside | `normalize-space(//title)`               |
 
-```xml
-<library>
-    <section id="sec1">
-        <book id="bk101">
-            <author>Author 1</author>
-            <title>XML Developer's Guide</title>
-            <genre>Computer</genre>
-            <price>44.95</price>
-            <publish_date>2000-10-01</publish_date>
-            <description>An in-depth look at creating applications with XML.</description>
-        </book>
-        <book id="bk102">
-            <author>Author 2</author>
-            <title>Midnight Rain</title>
-            <genre>Fantasy</genre>
-            <price>5.95</price>
-            <publish_date>2000-12-16</publish_date>
-            <description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description>
-        </book>
-    </section>
-    <section id="sec2">
-        <book id="bk103">
-            <author>Author 3</author>
-            <title>Maeve Ascendant</title>
-            <genre>Fantasy</genre>
-            <price>5.95</price>
-            <publish_date>2000-11-17</publish_date>
-            <description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description>
-        </book>
-    </section>
-</library>
-```
-
-**Node Selection**
-Root Node (/): Selects the root node of the document.
-```xpath
-/         # Selects the root node
-.         # Selects the current node
-//book    # Selects any node (all <book>) elements in the document
-```
-
-**Node Relationships**
-```xpath
-/library/book    # Selects all <book> elements that are direct children of <library>
-/library/book/@id    # Selects the id attribute of all <book> elements
-//book/..    # Selects the parent of each <book> element
-```
-**Predicates**: Used to find a specific node or a node that contains a specific value.
-```xpath
-//book[1]    # Selects the first <book> element
-//book[@id='bk101']    # Selects the <book> element with id="bk101"
-//book[contains(title, 'XML')]    # Selects all <book> elements with 'XML' in the title
-```
-**Functions**
-```xpath
-//book/title/text()    # Selects the text content of all <title> elements
-//book[last()]    # Selects the last <book> element
-//book[position()<3]    # Selects the first two <book> elements
-```
-**Axes**
-XPath axes are used to define a node set relative to the current node. Below are all the examples of XPath axes with explanations and sample XML for context.
-
-### Sample XML
-
-```xml
-<library>
-    <section id="sec1">
-        <book id="bk101">
-            <author>Author 1</author>
-            <title>XML Developer's Guide</title>
-            <genre>Computer</genre>
-            <price>44.95</price>
-            <publish_date>2000-10-01</publish_date>
-            <description>An in-depth look at creating applications with XML.</description>
-        </book>
-        <book id="bk102">
-            <author>Author 2</author>
-            <title>Midnight Rain</title>
-            <genre>Fantasy</genre>
-            <price>5.95</price>
-            <publish_date>2000-12-16</publish_date>
-            <description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description>
-        </book>
-    </section>
-    <section id="sec2">
-        <book id="bk103">
-            <author>Author 3</author>
-            <title>Maeve Ascendant</title>
-            <genre>Fantasy</genre>
-            <price>5.95</price>
-            <publish_date>2000-11-17</publish_date>
-            <description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description>
-        </book>
-    </section>
-</library>
-```
-
-### Examples of All XPath Axes
-
-| Axis                   | Description                                                | Example                                              | Result                        |
-|------------------------|------------------------------------------------------------|------------------------------------------------------|-------------------------------|
-| `ancestor::`           | Selects all ancestor nodes of the current node             | `//book/title/ancestor::section`                     | `<section id="sec1">...</section>` |
-| `ancestor-or-self::`   | Selects all ancestors and the current node                 | `//book/title/ancestor-or-self::section`             | `<section id="sec1">...</section>` |
-| `attribute::`          | Selects all attributes of the current node                 | `//book/attribute::id`                               | `bk101`, `bk102`, `bk103`     |
-| `child::`              | Selects all child nodes of the current node                | `/library/child::section`                            | `<section id="sec1">...</section>` |
-| `descendant::`         | Selects all descendants of the current node                | `/library/descendant::book`                          | `<book id="bk101">...</book>` |
-| `descendant-or-self::` | Selects all descendants and the current node               | `/library/descendant-or-self::section`               | `<section id="sec1">...</section>` |
-| `following::`          | Selects all nodes after the current node                   | `//book[@id='bk101']/following::book`                | `<book id="bk102">...</book>` |
-| `following-sibling::`  | Selects all siblings after the current node                | `//book[@id='bk101']/following-sibling::book`        | `<book id="bk102">...</book>` |
-| `namespace::`          | Selects all namespace nodes of the current node            | `//book/namespace::*`                                | *No output (no namespaces)*  |
-| `parent::`             | Selects the parent of the current node                     | `//title/parent::book`                               | `<book id="bk101">...</book>` |
-| `preceding::`          | Selects all nodes before the current node in the document  | `//book[@id='bk103']/preceding::book`                | `<book id="bk101">...</book>` |
-| `preceding-sibling::`  | Selects all siblings before the current node               | `//book[@id='bk102']/preceding-sibling::book`        | `<book id="bk101">...</book>` |
-| `self::`               | Selects the current node                                   | `//book[@id='bk101']/self::book`                     | `<book id="bk101">...</book>` |
+This table includes all major XPath selectors and provides a comprehensive reference for various types and patterns of XPath expressions.
 
 ### CSS Selectors summary
 This table includes all major CSS selectors, providing a comprehensive reference for various types and patterns of CSS selectors.
