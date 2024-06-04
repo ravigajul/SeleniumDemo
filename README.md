@@ -302,6 +302,62 @@ XPath axes are used to define a node set relative to the current node. Below are
 | `preceding-sibling::`  | Selects all siblings before the current node               | `//book[@id='bk102']/preceding-sibling::book`        | `<book id="bk101">...</book>` |
 | `self::`               | Selects the current node                                   | `//book[@id='bk101']/self::book`                     | `<book id="bk101">...</book>` |
 
+### CSS Selectors summary
+This table includes all major CSS selectors, providing a comprehensive reference for various types and patterns of CSS selectors.
+
+| **Selector Type**           | **Pattern**                | **Description**                                                   | **Example**                     |
+|-----------------------------|----------------------------|-------------------------------------------------------------------|---------------------------------|
+| **Universal Selector**      | `*`                        | Selects all elements                                              | `*`                             |
+| **Type Selector**           | `element`                  | Selects all elements of the specified type                        | `p`                             |
+| **Class Selector**          | `.classname`               | Selects all elements with the specified class                     | `.intro`                        |
+| **ID Selector**             | `#id`                      | Selects the element with the specified ID                         | `#header`                       |
+| **Attribute Selector**      | `[attribute]`              | Selects elements with the specified attribute                     | `[type]`                        |
+| **Attribute Value**         | `[attribute=value]`        | Selects elements with the specified attribute value               | `[type='text']`                 |
+| **Child Selector**          | `parent > child`           | Selects direct child elements of a specified parent               | `div > p`                       |
+| **Descendant Selector**     | `ancestor descendant`      | Selects all descendants of a specified ancestor                   | `div p`                         |
+| **Adjacent Sibling**        | `prev + next`              | Selects the next sibling element                                  | `h1 + p`                        |
+| **General Sibling**         | `prev ~ siblings`          | Selects all sibling elements                                      | `h1 ~ p`                        |
+| **Pseudo-class**            | `:pseudo-class`            | Selects elements based on their state or position                 | `a:hover`                       |
+| **Pseudo-element**          | `::pseudo-element`         | Selects and styles a part of an element                           | `p::first-line`                 |
+| **Group Selector**          | `selector1, selector2`     | Selects all elements matching any of the grouped selectors        | `h1, h2, h3`                    |
+| **Nth-child Selector**      | `:nth-child(n)`            | Selects the nth child of a parent element                         | `li:nth-child(2)`               |
+| **Nth-last-child**          | `:nth-last-child(n)`       | Selects the nth child from the end                                | `li:nth-last-child(1)`          |
+| **First-child**             | `:first-child`             | Selects the first child of a parent element                       | `p:first-child`                 |
+| **Last-child**              | `:last-child`              | Selects the last child of a parent element                        | `p:last-child`                  |
+| **Only-child**              | `:only-child`              | Selects elements that are the only child of their parent          | `p:only-child`                  |
+| **First-of-type**           | `:first-of-type`           | Selects the first element of its type within its parent           | `p:first-of-type`               |
+| **Last-of-type**            | `:last-of-type`            | Selects the last element of its type within its parent            | `p:last-of-type`                |
+| **Nth-of-type**             | `:nth-of-type(n)`          | Selects the nth element of its type within its parent             | `p:nth-of-type(2)`              |
+| **Nth-last-of-type**        | `:nth-last-of-type(n)`     | Selects the nth element of its type from the end                  | `p:nth-last-of-type(1)`         |
+| **Empty Selector**          | `:empty`                   | Selects elements that have no children                            | `div:empty`                     |
+| **Not Selector**            | `:not(selector)`           | Selects elements that do not match the selector                   | `:not(.exclude)`                |
+| **Enabled Selector**        | `:enabled`                 | Selects enabled form elements                                     | `input:enabled`                 |
+| **Disabled Selector**       | `:disabled`                | Selects disabled form elements                                    | `input:disabled`                |
+| **Checked Selector**        | `:checked`                 | Selects checked form elements                                     | `input:checked`                 |
+| **Lang Selector**           | `:lang(language)`          | Selects elements with a specific language attribute               | `:lang(en)`                     |
+| **Root Selector**           | `:root`                    | Selects the document's root element                               | `:root`                         |
+| **Focus Selector**          | `:focus`                   | Selects the element that has focus                                | `input:focus`                   |
+| **Target Selector**         | `:target`                  | Selects the current active target element                         | `#section1:target`              |
+| **Hover Selector**          | `:hover`                   | Selects elements when the mouse is over them                      | `a:hover`                       |
+| **Active Selector**         | `:active`                  | Selects and styles the active link                                | `a:active`                      |
+| **Visited Selector**        | `:visited`                 | Selects links that have been visited                              | `a:visited`                     |
+| **Before Pseudo-element**   | `::before`                 | Inserts content before the content of the element                 | `p::before`                     |
+| **After Pseudo-element**    | `::after`                  | Inserts content after the content of the element                  | `p::after`                      |
+| **First-letter Pseudo-element** | `::first-letter`       | Selects the first letter of the element                           | `p::first-letter`               |
+| **First-line Pseudo-element** | `::first-line`           | Selects the first line of the element                             | `p::first-line`                 |
+| **Placeholder Selector**    | `::placeholder`            | Selects the placeholder text in an input element                  | `input::placeholder`            |
+| **Selection Selector**      | `::selection`              | Selects the portion of an element that is selected by a user      | `::selection`                   |
+| **Focus-within Selector**   | `:focus-within`            | Selects an element if any of its descendants have focus           | `div:focus-within`              |
+| **Read-only Selector**      | `:read-only`               | Selects elements that are read-only                               | `input:read-only`               |
+| **Read-write Selector**     | `:read-write`              | Selects elements that are read-write                              | `input:read-write`              |
+| **In-range Selector**       | `:in-range`                | Selects elements with a value within a specified range            | `input:in-range`                |
+| **Out-of-range Selector**   | `:out-of-range`            | Selects elements with a value outside a specified range           | `input:out-of-range`            |
+| **Valid Selector**          | `:valid`                   | Selects form elements with a valid value                          | `input:valid`                   |
+| **Invalid Selector**        | `:invalid`                 | Selects form elements with an invalid value                       | `input:invalid`                 |
+| **Required Selector**       | `:required`                | Selects required form elements                                    | `input:required`                |
+| **Optional Selector**       | `:optional`                | Selects optional form elements                                    | `input:optional`                |
+| **Fullscreen Selector**     | `:fullscreen`              | Selects the element that is in fullscreen mode                    | `:fullscreen`                   |
+
 
 ### Navigation Methods
 
