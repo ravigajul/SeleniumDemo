@@ -346,3 +346,26 @@ mvn clean test
 mvn clean test -Dbrowser="msedge"
 
 ```
+## Usinf CDP in C#
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools;
+using OpenQA.Selenium.DevTools.V120; // Use v120 even if Chrome is 139
+
+var options = new ChromeOptions();
+// Add any relevant ChromeOptions as needed
+var driver = new ChromeDriver(options);
+
+var devTools = driver.GetDevToolsSession();
+var domains = devTools.GetVersionSpecificDomains<V120.DevToolsSessionDomains>();
+
+await domains.Network.Enable();
+
+// For Basic Auth (if needed):
+await domains.Network.Authenticate(new AuthenticateCommandSettings
+{
+    Username = "svc_bescp_qa",
+    Password = "QMS%A32:?DxP"
+});
+
+driver.Navigate().GoToUrl("https://your-url-needing-auth");
