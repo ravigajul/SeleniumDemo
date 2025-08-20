@@ -347,25 +347,32 @@ mvn clean test -Dbrowser="msedge"
 
 ```
 ## Usinf CDP in C#
-using OpenQA.Selenium;
+using using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools;
-using OpenQA.Selenium.DevTools.V120; // Use v120 even if Chrome is 139
+using OpenQA.Selenium.DevTools.V139; // Use v139 matching your Chrome version
 
-var options = new ChromeOptions();
-// Add any relevant ChromeOptions as needed
-var driver = new ChromeDriver(options);
-
-var devTools = driver.GetDevToolsSession();
-var domains = devTools.GetVersionSpecificDomains<V120.DevToolsSessionDomains>();
-
-await domains.Network.Enable();
-
-// For Basic Auth (if needed):
-await domains.Network.Authenticate(new AuthenticateCommandSettings
+public class BrowserAuthHelper
 {
-    Username = "svc_bescp_qa",
-    Password = "QMS%A32:?DxP"
-});
+    public static async Task<IWebDriver> CreateChromeWithBasicAuthAsync(string username, string password)
+    {
+        var options = new ChromeOptions();
+        // Add your specific options if needed
 
-driver.Navigate().GoToUrl("https://your-url-needing-auth");
+        var driver = new ChromeDriver(options);
+        var devTools = driver.GetDevToolsSession();
+        var domains = devTools.GetVersionSpecificDomains<V139.DevToolsSessionDomains>();
+
+        // Enable network domain in DevTools
+        await domains.Network.Enable(new Network.EnableCommandSettings());
+
+        // Send Basic Auth credentials
+        await domains.Network.Authenticate(new Network.AuthenticateCommandSettings
+        {
+            Username = username,
+            Password = password
+        });
+
+        return driver;
+    }
+}
